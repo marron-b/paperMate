@@ -9,6 +9,7 @@
 - [Installation](#-installation)
 - [Integration Note](#-integration-note)
 - [Setup Guide for Tavily Integration](#-setup-guide-for-tavily-integration-with-papermate)
+- [Usage with Claude Desktop App](#usage-with-claude-desktop-app) 
 
 ### ✨ Features
 - 🔍 Search academic papers easily
@@ -65,7 +66,7 @@ If not, download and install it from [nodejs](https://nodejs.org).
 #### 📂 Step 2: Update Claude Desktop Configuration
 Open the following configuration file (replacing {username} with your real username):
 
-```
+```bash
 /Users/{username}/Library/Application Support/Claude/claude_desktop_config.json
 ```
 
@@ -96,3 +97,49 @@ If you already have other mcpServers defined, just merge this block into the exi
 Once this is set up, PaperMate will be able to search for and recommend academic papers using Tavily's web search capabilities through Claude Desktop.
 
 If you have any issues, check that your API key is valid and that your Node.js version is compatible.
+
+
+### 🖥 Usage with Claude Desktop App
+#### 🔧 Step 1: Open the Claude Desktop App config.json file
+Navigate to the following path (replace {username} with your actual macOS username):
+```bash
+/Users/{username}/Library/Application Support/Claude/claude_desktop_config.json
+```
+
+#### 📂 Step 2: Register MCP servers by adding the following configuration
+
+```json
+"PaperResearcher": {
+  "command": "uv",
+  "args": [
+    "run",
+    "--with",
+    "mcp[cli]",
+    "mcp",
+    "run",
+    // Replace with your actual path to the paperMate project directory
+    "/{absolute path to your local paperMate project}/paper_researcher.py"
+  ]
+},
+"PDFHelper": {
+  "command": "uv",
+  "args": [
+    "run",
+    "--with",
+    "PyPDF2",
+    "--with",
+    "mcp[cli]",
+    "--with",
+    "python-docx",
+    "mcp",
+    "run",
+    // Replace with your actual path to the paperMate project directory
+    "/{absolute path to your local paperMate project}/pdf_helper.py"
+  ]
+}
+```
+
+#### 🚀 Step 3: Launch the Claude Desktop App and confirm the MCP servers are running correctly
+Once the config file has been updated, restart the Claude app. You should now be able to use the PaperMate features via Claude chat using the configured MCP commands.
+
+![Claude MCP Integration Screenshot](./images/claude_mcp_integration_01.png)
